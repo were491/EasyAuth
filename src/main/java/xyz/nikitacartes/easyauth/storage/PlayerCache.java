@@ -35,6 +35,7 @@ public class PlayerCache {
     public String password = "";
     /**
      * Stores how many times player has tried to log in.
+     * This should only be a max of maxLoginTries - 1.
      */
     public int loginTries = 0;
     /**
