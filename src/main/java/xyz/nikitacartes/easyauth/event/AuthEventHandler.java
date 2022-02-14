@@ -62,8 +62,13 @@ public class AuthEventHandler {
             );
         }
         // If the player has too many login attempts, kick them immediately.
-        // For Mojang account in offline (not mixed) mode we get offline uuid too.
-        String id = PlayerEntity.getOfflinePlayerUuid(incomingPlayerUsername.toLowerCase()).toString();
+        // getUUIDFromProfile will return online if possible, and offline if not.
+        // This should work in all cases but honestly I'm too scared to really commit
+        // this since the old code seems to work. Well, if there are ever issues
+        // arising relating to UUIDs... you know where to investigate lol
+        // In the end, the kicking should never have worked for the online-mode
+        // servers anyways, so if issues happen maybe this solves the issue. Oh well...
+        String id = PlayerEntity.getUuidFromProfile(profile).toString();
         if (config.main.maxLoginTries != -1 && playerCacheMap.containsKey(id)) {
         	if (playerCacheMap.get(id).lastKicked >= System.currentTimeMillis() - 1000 * config.experimental.resetLoginAttemptsTime) {
                 return new LiteralText(config.lang.loginTriesExceeded);
